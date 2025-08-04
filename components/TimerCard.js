@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    Modal,
     Pressable,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TimerCard({ timer, onStartPause, onReset }) {
+    const [expanded, setExpanded] = useState(false);
+
     const isRunning = timer.status === 'running';
     const isPaused = timer.status === 'paused';
-    const isCompleted = timer.remaining === 0;
-
-    const [showModal, setShowModal] = useState(false);
-
-    useEffect(() => {
-        if (isCompleted) {
-            setShowModal(true);
-        }
-    }, [isCompleted]);
+    const isCompleted = timer.status === 'completed';
 
     const statusText = isCompleted
         ? '✅ Completed'
@@ -29,51 +23,48 @@ export default function TimerCard({ timer, onStartPause, onReset }) {
                 ? '⏸️ Paused'
                 : '⏹️ Idle';
 
-    const total = timer.duration || 1; // prevent divide by zero
+    const total = timer.duration || 1;
     const percentage = ((total - timer.remaining) / total) * 100;
 
     return (
-        <View style={styles.card}>
-            <View style={styles.info}>
-                <Text style={styles.label}>{timer.name || 'Unnamed Timer'}</Text>
-                <Text style={styles.status}>{statusText}</Text>
-                <Text style={styles.time}>{formatTime(timer.remaining)}</Text>
+        <Pressable onPress={() => setExpanded(!expanded)}>
+            <View style={styles.card}>
+                <View style={styles.headerRow}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.label}>{timer.name || 'Unnamed Timer'}</Text>
+                        <Text style={styles.status}>{statusText}</Text>
+                    </View>
+                    <Ionicons
+                        name={expanded ? 'chevron-up' : 'chevron-down'}
+                        size={24}
+                        color="#888"
+                    />
+                </View>
 
                 {/* Progress Bar */}
                 <View style={styles.progressContainer}>
                     <View style={[styles.progressBar, { width: `${percentage}%` }]} />
                 </View>
-                <Text style={styles.percentage}>{Math.round(percentage)}%</Text>
+
+                {expanded && (
+                    <>
+                        <Text style={styles.time}>{formatTime(timer.remaining)}</Text>
+
+                        <View style={styles.buttons}>
+                            <TouchableOpacity onPress={onStartPause} style={styles.button}>
+                                <Text style={styles.buttonText}>
+                                    {isRunning ? 'Pause' : 'Start'}
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={onReset} style={[styles.button, styles.resetButton]}>
+                                <Text style={styles.buttonText}>Reset</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                )}
             </View>
-
-            <View style={styles.buttons}>
-                <TouchableOpacity onPress={onStartPause} style={styles.button}>
-                    <Text style={styles.buttonText}>{isRunning ? 'Pause' : 'Start'}</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={onReset} style={[styles.button, styles.resetButton]}>
-                    <Text style={styles.buttonText}>Reset</Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* Completion Modal */}
-            <Modal visible={showModal} transparent animationType="slide">
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>🎉 Great job!</Text>
-                        <Text style={styles.modalText}>
-                            You completed: <Text style={{ fontWeight: 'bold' }}>{timer.name}</Text>
-                        </Text>
-                        <Pressable
-                            onPress={() => setShowModal(false)}
-                            style={styles.modalButton}
-                        >
-                            <Text style={styles.modalButtonText}>Close</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
-        </View>
+        </Pressable>
     );
 }
 
@@ -99,23 +90,26 @@ const styles = StyleSheet.create({
         shadowRadius: 6,
         elevation: 3,
     },
-    info: {
-        marginBottom: 12,
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 8,
     },
     label: {
         fontSize: 18,
         fontWeight: '600',
-        marginBottom: 4,
+        marginBottom: 2,
     },
     status: {
         fontSize: 14,
         color: '#888',
-        marginBottom: 4,
     },
     time: {
         fontSize: 28,
         fontWeight: 'bold',
         color: '#333',
+        marginTop: 8,
         marginBottom: 8,
     },
     percentage: {
@@ -137,6 +131,7 @@ const styles = StyleSheet.create({
     buttons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginTop: 12,
     },
     button: {
         paddingVertical: 8,
@@ -151,41 +146,5 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '600',
         fontSize: 16,
-    },
-
-    // Modal Styles
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-        backgroundColor: '#fff',
-        borderRadius: 12,
-        padding: 24,
-        alignItems: 'center',
-        marginHorizontal: 32,
-    },
-    modalTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 12,
-    },
-    modalText: {
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-    modalButton: {
-        backgroundColor: '#4CAF50',
-        paddingVertical: 10,
-        paddingHorizontal: 24,
-        borderRadius: 8,
-    },
-    modalButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '600',
     },
 });

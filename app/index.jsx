@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { TimerContext } from '../context/AppContext';
 import TimerCard from '../components/TimerCard';
 
 export default function HomeScreen() {
   const { state, dispatch } = useContext(TimerContext);
   const { timers } = state;
-
   const [collapsed, setCollapsed] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
     const initialCollapsed = {};
@@ -63,9 +64,27 @@ export default function HomeScreen() {
     });
   };
 
+  const filteredCategories = selectedCategory === 'All'
+    ? Object.entries(timers)
+    : [[selectedCategory, timers[selectedCategory]]];
+
   return (
     <ScrollView style={styles.container}>
-      {Object.entries(timers).map(([category, categoryTimers]) => {
+      <View style={styles.filterContainer}>
+        <Text style={styles.filterLabel}>Filter by Category:</Text>
+        <Picker
+          selectedValue={selectedCategory}
+          style={styles.picker}
+          onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+        >
+          <Picker.Item label="All" value="All" />
+          {Object.keys(timers).map((category) => (
+            <Picker.Item key={category} label={category} value={category} />
+          ))}
+        </Picker>
+      </View>
+
+      {filteredCategories.map(([category, categoryTimers]) => {
         const isCollapsed = collapsed[category];
         return (
           <View key={category} style={styles.categoryBlock}>
@@ -121,6 +140,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f3f4f6',
+  },
+  filterContainer: {
+    margin: 16,
+    marginBottom: 0,
+  },
+  filterLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    backgroundColor: '#fff',
   },
   categoryBlock: {
     marginBottom: 24,
