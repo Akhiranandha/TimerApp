@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# ⏱️ React Native Timer App (Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A customizable productivity timer app built using **React Native** and **Expo**, supporting multiple timers with categories, bulk actions, history tracking, and JSON export.
 
-## Get started
+---
 
-1. Install dependencies
+## 📲 Features
 
-   ```bash
-   npm install
-   ```
+- ✅ Add, start, pause, and reset individual timers
+- 📂 Categorize timers for organized workflows
+- 🔁 Bulk actions: Start All, Pause All, Reset All per category
+- 🕘 Timer History: Logs completed timers with timestamps
+- 📤 Export history as a JSON file
+- ⚙️ Built using Expo for cross-platform support
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🛠️ Setup Instructions
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Clone the Repository
 
 ```bash
-npm run reset-project
+git clone https://github.com/<your-username>/<your-repo-name>.git
+cd <your-repo-name>
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Install Dependencies
 
-## Learn more
+```bash
+npm install
+# or
+yarn install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### 3. Run the App
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Ensure you have Expo CLI installed:
 
-## Join the community
+```bash
+npm install -g expo-cli
+```
 
-Join our community of developers creating universal apps.
+Then start the development server:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+expo start
+```
+
+Use the QR code in your terminal to open the app on your device using the **Expo Go** app.
+
+---
+
+Download the app from Github releases.
+
+---
+
+## 📌 Assumptions Made
+
+- **Local State Management**: App state is managed using `useReducer` and `Context API`, persisted using `AsyncStorage`.
+- **No Backend Required**: This is a standalone mobile app. No authentication or server sync is implemented.
+- **Expo Managed Workflow**: The app is built and deployed using the managed Expo environment for ease of development.
+- **Timer Accuracy**: Timers use JavaScript intervals and may experience slight drift; suitable for productivity use, not for precision timing.
+
+---
+
+## 📁 Folder Structure
+
+```
+/assets          -> App images and icons
+/components      -> Reusable UI components
+/context         -> Global state and reducer logic
+/screens         -> App screens (Home, History, etc.)
+/utils           -> Helper functions (e.g., export logic)
+App.js           -> Entry point
+```
+
+---
+
+## 🙋‍♂️ Author
+
+**Akhiranandha Kodam**  
+🔗 [LinkedIn](https://www.linkedin.com/in/akhiranandha)
