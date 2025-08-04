@@ -1,10 +1,7 @@
-// file: /app/_layout.tsx
-
 import { Tabs } from 'expo-router';
 import React, { useContext } from 'react';
 import { Modal, Text, View, Pressable, StyleSheet } from 'react-native';
 import { TimerProvider, TimerContext } from '../context/AppContext';
-import Toast from 'react-native-root-toast';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -51,27 +48,26 @@ export default function TabLayout() {
   return (
     <TimerProvider>
       <GlobalModal />
-      <Toast />
       <Tabs>
         <Tabs.Screen
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ color }) => <Entypo name="home" size={24} color="black" />,
+            tabBarIcon: ({ color }) => <Entypo name="home" size={24} color={color} />,
           }}
         />
         <Tabs.Screen
           name="createTimer"
           options={{
             title: 'Create Timer',
-            tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={24} color="black" />,
+            tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={24} color={color} />,
           }}
         />
         <Tabs.Screen
           name="history"
           options={{
             title: 'History',
-            tabBarIcon: ({ color }) => <FontAwesome5 name="history" size={24} color="black" />,
+            tabBarIcon: ({ color }) => <FontAwesome5 name="history" size={24} color={color} />,
           }}
         />
       </Tabs>

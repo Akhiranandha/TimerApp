@@ -41,7 +41,6 @@ export default function TimerCard({ timer, onStartPause, onReset }) {
                     />
                 </View>
 
-                {/* Progress Bar */}
                 <View style={styles.progressContainer}>
                     <View style={[styles.progressBar, { width: `${percentage}%` }]} />
                 </View>

@@ -1,16 +1,79 @@
-// file: /app/createTimer.jsx
 import React, { useState, useContext } from 'react';
-import {
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  Alert,
-} from 'react-native';
+import { TextInput, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
 import { TimerContext } from '../context/AppContext';
+
+export default function CreateTimerScreen() {
+  const { dispatch } = useContext(TimerContext);
+  const [name, setName] = useState('');
+  const [duration, setDuration] = useState('');
+  const [category, setCategory] = useState('');
+
+  const createTimer = () => {
+    const trimmedName = name.trim();
+    const trimmedCategory = category.trim() || 'Uncategorized';
+    const numericDuration = Number(duration.trim());
+
+    if (!trimmedName) {
+      Alert.alert('Validation Error', 'Please enter a timer name.');
+      return;
+    }
+
+    if (isNaN(numericDuration) || numericDuration <= 0) {
+      Alert.alert('Validation Error', 'Please enter a valid duration in seconds.');
+      return;
+    }
+
+    dispatch({
+      type: 'ADD_TIMER',
+      payload: {
+        name: trimmedName,
+        duration: numericDuration,
+        category: trimmedCategory,
+      },
+    });
+
+    setName('');
+    setDuration('');
+    setCategory('');
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+    >
+      <Text style={styles.header}>Create New Timer</Text>
+
+      <Text style={styles.label}>Timer Name</Text>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="e.g., Study Timer"
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Duration (seconds)</Text>
+      <TextInput
+        value={duration}
+        onChangeText={setDuration}
+        keyboardType="numeric"
+        placeholder="e.g., 1500"
+        style={styles.input}
+      />
+
+      <Text style={styles.label}>Category</Text>
+      <TextInput
+        value={category}
+        onChangeText={setCategory}
+        placeholder="e.g., Productivity"
+        style={styles.input}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={createTimer}>
+        <Text style={styles.buttonText}>Create Timer</Text>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -52,77 +115,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-
-export default function CreateTimerScreen() {
-  const { dispatch } = useContext(TimerContext);
-  const [name, setName] = useState('');
-  const [duration, setDuration] = useState('');
-  const [category, setCategory] = useState('');
-
-  const createTimer = () => {
-    const trimmedName = name.trim();
-    const trimmedCategory = category.trim() || 'Uncategorized';
-    const numericDuration = Number(duration.trim());
-
-    if (!trimmedName) {
-      Alert.alert('Validation Error', 'Please enter a timer name.');
-      return;
-    }
-
-    if (isNaN(numericDuration) || numericDuration <= 0) {
-      Alert.alert('Validation Error', 'Please enter a valid duration in seconds.');
-      return;
-    }
-
-    dispatch({
-      type: 'ADD_TIMER',
-      payload: {
-        name: trimmedName,
-        duration: numericDuration,
-        category: trimmedCategory,
-      },
-    });
-
-    setName('');
-    setDuration('');
-    setCategory('');
-  };
-
-  return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.container}
-    >
-      <Text style={styles.header}>Create New Timer</Text>
-
-      <Text style={styles.label}>Timer Name</Text>
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="e.g., Study Timer"
-        style={styles.input}
-      />
-
-      <Text style={styles.label}>Duration (seconds)</Text>
-      <TextInput
-        value={duration}
-        onChangeText={setDuration}
-        keyboardType="numeric"
-        placeholder="e.g., 1500"
-        style={styles.input}
-      />
-
-      <Text style={styles.label}>Category</Text>
-      <TextInput
-        value={category}
-        onChangeText={setCategory}
-        placeholder="e.g., Productivity"
-        style={styles.input}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={createTimer}>
-        <Text style={styles.buttonText}>Create Timer</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
-  );
-}

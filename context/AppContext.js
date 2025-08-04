@@ -167,7 +167,6 @@ const reducer = (state, action) => {
 export const TimerProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    // Load from AsyncStorage
     useEffect(() => {
         const loadState = async () => {
             try {
@@ -187,13 +186,11 @@ export const TimerProvider = ({ children }) => {
         loadState();
     }, []);
 
-    // Save to AsyncStorage
     useEffect(() => {
         AsyncStorage.setItem('timers', JSON.stringify(state.timers));
         AsyncStorage.setItem('history', JSON.stringify(state.history));
     }, [state.timers, state.history]);
 
-    // Global tick
     useEffect(() => {
         const interval = setInterval(() => {
             dispatch({ type: 'TICK', payload: {} });
