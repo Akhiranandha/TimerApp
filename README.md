@@ -11,7 +11,6 @@ A customizable productivity timer app built using **React Native** and **Expo**,
 - 🔁 Bulk actions: Start All, Pause All, Reset All per category
 - 🕘 Timer History: Logs completed timers with timestamps
 - 📤 Export history as a JSON file
-- ⚙️ Built using Expo for cross-platform support
 
 ---
 
@@ -20,7 +19,7 @@ A customizable productivity timer app built using **React Native** and **Expo**,
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo-name>.git
+git clone https://github.com/Akhiranandha/TimerApp/
 cd <your-repo-name>
 ```
 
@@ -59,20 +58,7 @@ Download the app from Github releases.
 - **Local State Management**: App state is managed using `useReducer` and `Context API`, persisted using `AsyncStorage`.
 - **No Backend Required**: This is a standalone mobile app. No authentication or server sync is implemented.
 - **Expo Managed Workflow**: The app is built and deployed using the managed Expo environment for ease of development.
-- **Timer Accuracy**: Timers use JavaScript intervals and may experience slight drift; suitable for productivity use, not for precision timing.
-
----
-
-## 📁 Folder Structure
-
-```
-/assets          -> App images and icons
-/components      -> Reusable UI components
-/context         -> Global state and reducer logic
-/screens         -> App screens (Home, History, etc.)
-/utils           -> Helper functions (e.g., export logic)
-App.js           -> Entry point
-```
+- Completed Timers are recorded/present in both timers and history
 
 ---
 
